@@ -10,7 +10,7 @@ const Signup = () => {
 
     const handleSignup = async () => {
         try {
-            const response = await axios.post(`http://localhost:8080/login/create?userName=${userName}&passWord=${passWord}`);
+            const response = await axios.post(`https://kbase-backend-b5135e83fa8d.herokuapp.com/login/create?userName=${userName}&passWord=${passWord}`);
 
             if (response.status === 200) {
                 setErrorMessage('');

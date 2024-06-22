@@ -66,7 +66,7 @@ const EditPage = () => {
 
     const fetchMenuFiles = async () => {
         try {
-            const response = await axiosPrivate.get(`http://localhost:8080/search/menu/${menuId}`);
+            const response = await axiosPrivate.get(`https://kbase-backend-b5135e83fa8d.herokuapp.com/search/menu/${menuId}`);
             if (response.data) {
                 const data = await response.data;
                 setMenuFiles(data);
@@ -120,7 +120,7 @@ const EditPage = () => {
 
         try {
 
-            const response = await axiosPrivate.post(`http://localhost:8080/update/${menuId}`, formData, {
+            const response = await axiosPrivate.post(`https://kbase-backend-b5135e83fa8d.herokuapp.com/update/${menuId}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

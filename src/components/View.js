@@ -22,7 +22,7 @@ const View = () => {
     useEffect(() => {
         const fetchSearchResults = async () => {
             try {
-                const response = await axiosPrivate.get(`http://localhost:8080/search/${id}`);
+                const response = await axiosPrivate.get(`https://kbase-backend-b5135e83fa8d.herokuapp.com/search/${id}`);
                 setSearchRes(response.data);
             } catch (error) {
                 console.error('Error fetching search results:', error);
@@ -35,7 +35,7 @@ const View = () => {
 
     const getFileContent = async (fileName, menuId) => {
         try {
-            const response = await axiosPrivate.get(`http://localhost:8080/files/${fileName}/menu/${menuId}`);
+            const response = await axiosPrivate.get(`https://kbase-backend-b5135e83fa8d.herokuapp.com/files/${fileName}/menu/${menuId}`);
 
             if (response.status === 200) {
                 return response.data; // Access the 'data' property to get the content
@@ -139,7 +139,7 @@ const View = () => {
     useEffect(() => {
         const fetchSearchResults = async () => {
             try {
-                const response = await axiosPrivate.get(`http://localhost:8080/search/${id}`);
+                const response = await axiosPrivate.get(`https://kbase-backend-b5135e83fa8d.herokuapp.com/search/${id}`);
                 setSearchRes(response.data);
             } catch (error) {
                 console.error('Error fetching search results:', error);
@@ -153,7 +153,7 @@ const View = () => {
 
     const renderFile = (item) => {
         const extension = getExtension(item.filePath);
-        const fileUrl = `http://localhost:8080/files/${item.fileName}/menu/${item.menu.menuId}`;
+        const fileUrl = `https://kbase-backend-b5135e83fa8d.herokuapp.com/files/${item.fileName}/menu/${item.menu.menuId}`;
 
         switch (extension) {
             case 'txt':

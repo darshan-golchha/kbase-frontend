@@ -21,7 +21,7 @@ const Login = () => {
     const { updateToken } = useContext(AuthContext);
 
     const API = axios.create({
-        baseURL: "http://localhost:8080",
+        baseURL: "https://kbase-backend-b5135e83fa8d.herokuapp.com",
     });
 
     const handleSubmit = async (e) => {

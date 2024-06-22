@@ -40,7 +40,7 @@ export default function Data() {
         description = '';
       }
 
-      const url = `http://localhost:8080/search?author=${author}&description=${description}&uniqueMenuId=true`;
+      const url = `https://kbase-backend-b5135e83fa8d.herokuapp.com/search?author=${author}&description=${description}&uniqueMenuId=true`;
       const getData = async () => {
         try {
           const response = await axiosPrivate.get(url);

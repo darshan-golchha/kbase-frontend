@@ -24,7 +24,7 @@ const Details = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await axiosPrivate.get(`http://localhost:8080/search/menu/${id}`);
+        const response = await axiosPrivate.get(`https://kbase-backend-b5135e83fa8d.herokuapp.com/search/menu/${id}`);
         setSearchRes(response.data);
       } catch (error) {
         console.error('Error fetching search results:', error);

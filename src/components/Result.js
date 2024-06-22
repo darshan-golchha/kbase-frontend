@@ -23,7 +23,7 @@ const Result = () => {
   useEffect(() => {
       const getData = async () => {
         try {
-          const response = await axiosPrivate.get('http://localhost:8080/search/deps');
+          const response = await axiosPrivate.get('https://kbase-backend-b5135e83fa8d.herokuapp.com/search/deps');
           const departmentsData = response.data.map(departmentName => ({
             value: departmentName,
             label: departmentName
@@ -50,7 +50,7 @@ const Result = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await axiosPrivate.get('http://localhost:8080/search/func');
+        const response = await axiosPrivate.get('https://kbase-backend-b5135e83fa8d.herokuapp.com/search/func');
         const departmentsData = response.data.map(departmentName => ({
           value: departmentName,
           label: departmentName
@@ -77,7 +77,7 @@ const Result = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await axiosPrivate.get('http://localhost:8080/search/apps');
+        const response = await axiosPrivate.get('https://kbase-backend-b5135e83fa8d.herokuapp.com/search/apps');
         const departmentsData = response.data.map(departmentName => ({
           value: departmentName,
           label: departmentName
@@ -111,7 +111,7 @@ const Result = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await axiosPrivate.get('http://localhost:8080/search/menu');
+        const response = await axiosPrivate.get('https://kbase-backend-b5135e83fa8d.herokuapp.com/search/menu');
         const departmentsData = response.data.map(departmentName => ({
           value: departmentName,
           label: departmentName
@@ -196,7 +196,7 @@ const Result = () => {
       alert('Please fill in all the required fields and upload at least one file before submitting.');
       return;
     }
-    const url = `http://localhost:8080/add?departmentName=${department}&functionName=${func}&applicationName=${application}&menuName=${menu}&description=${desc}&author=${auth}`;
+    const url = `https://kbase-backend-b5135e83fa8d.herokuapp.com/add?departmentName=${department}&functionName=${func}&applicationName=${application}&menuName=${menu}&description=${desc}&author=${auth}`;
 
     const formData = new FormData();
     for (let i = 0; i < files.length; i++) {
