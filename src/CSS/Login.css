@@ -1,0 +1,62 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Styling for the root container */
+#root {
+    overflow: hidden; /* Prevent horizontal scroll */
+}
+
+/* Center the login box horizontally and vertically */
+.Box-root {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Styling for the landscape image */
+.Box-root > :first-child {
+    min-width: 50%;
+}
+
+/* Styling for the login box container */
+.Box-root > :last-child {
+    max-width: 400px;
+}
+
+/* Additional styles for the login box */
+form {
+    width: 100%;
+    max-width: 400px;
+}
+
+.TextField-root {
+    width: 100%;
+}
+
+/* Button styles */
+button {
+    width: 100%;
+    background-color: #2196f3;
+    color: #fff;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Error message styles */
+.MuiTypography-colorError {
+    color: red;
+    font-size: 14px;
+}
+
+/* Styling for the background image */
+.Box-root > :first-child {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
