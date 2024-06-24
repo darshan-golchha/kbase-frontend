@@ -21,6 +21,7 @@ import {
     Paper,
 } from '@mui/material';
 import { Edit, Delete, ArrowBack } from '@mui/icons-material';
+import Loader from '../components/Loader';
 
 const UserTable = () => {
     const [users, setUsers] = useState([]);
@@ -30,26 +31,29 @@ const UserTable = () => {
     const [selectedRole, setSelectedRole] = useState('');
     const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetchUsers();
     }, [searchUsername]);
 
     const fetchUsers = async () => {
+        setLoading(true);
         try {
             const endpoint = searchUsername ? '/user' : '/allUsers';
             const params = searchUsername ? { username: searchUsername } : {};
 
             const response = await axiosPrivate.get(endpoint, { params });
             setUsers(response.data);
+            setLoading(false);
         } catch (error) {
-            console.log(error.response);
+            setLoading(false);
             if (error.response && (error.response.status === 403)) {
                 window.alert('Unauthorized! You are not allowed to edit this record.');
-                navigate("/", { replace: true });
+                navigate("/home", { replace: true });
             } else if (error.response && error.response.status === 401) {
                 window.alert('Your session is expired Or you are not authorized to access this.');
-                navigate("/login", { replace: true });
+                navigate("/", { replace: true });
             } else {
                 console.error('Error fetching users : ', error);
             }
@@ -77,18 +81,20 @@ const UserTable = () => {
     };
 
     const handleRoleChange = async () => {
+        setLoading(true);
         try {
             const response = await axiosPrivate.post(`/rolechange?roleName=${selectedRole}&userId=${selectedUserId}`);
             setOpenDialog(false);
             fetchUsers();
+            setLoading(false);
         } catch (error) {
-            console.log(error.response);
+            setLoading(false);
             if (error.response && (error.response.status === 403)) {
                 window.alert('Unauthorized! You are not allowed to edit this record.');
-                navigate("/", { replace: true });
+                navigate("/home", { replace: true });
             } else if (error.response && error.response.status === 401) {
                 window.alert('Your session is expired Or you are not authorized to access this.');
-                navigate("/login", { replace: true });
+                navigate("/", { replace: true });
             } else {
                 console.error('Error changing roles : ', error);
             }
@@ -96,17 +102,19 @@ const UserTable = () => {
     };
 
     const deleteUser = async (userId) => {
+        setLoading(true);
         try {
             const response = await axiosPrivate.post(`/deleteUser?userId=${userId}`);
             fetchUsers();
+            setLoading(false);
         } catch (error) {
-            console.log(error.response);
+            setLoading(false);
             if (error.response && (error.response.status === 403)) {
                 window.alert('Unauthorized! You are not allowed to edit this record.');
-                navigate("/", { replace: true });
+                navigate("/home", { replace: true });
             } else if (error.response && error.response.status === 401) {
                 window.alert('Your session is expired Or you are not authorized to access this.');
-                navigate("/login", { replace: true });
+                navigate("/", { replace: true });
             } else {
                 console.error('Error deleting users : ', error);
             }
@@ -117,6 +125,7 @@ const UserTable = () => {
 
     return (
         <div>
+            {loading && <Loader />}
             <div style={{ marginBottom: '1em' }}>
                 <TextField
                     type="text"

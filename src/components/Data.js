@@ -10,6 +10,7 @@ import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import { Typography } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/material/IconButton';
+import Loader from './Loader';
 
 
 const criterias = [
@@ -30,6 +31,8 @@ export default function Data() {
   const [Search, setSearch] = React.useState('')
   const [Keyword, setKeyword] = React.useState('')
   const [searchResults, setSearchResults] = React.useState([])
+  const [loading, setLoading] = React.useState(false)
+
   const handleClick = (e) => {
     if (Search) {
       if (Keyword === "description") {
@@ -41,11 +44,14 @@ export default function Data() {
       }
 
       const url = `https://kbase-backend-b5135e83fa8d.herokuapp.com/search?author=${author}&description=${description}&uniqueMenuId=true`;
+      setLoading(true);
       const getData = async () => {
         try {
           const response = await axiosPrivate.get(url);
           setSearchResults(response.data);
+          setLoading(false);
         } catch (error) {
+          setLoading(false);
           console.error('Error fetching search results:', error);
         }
       }
@@ -125,7 +131,7 @@ export default function Data() {
               InputProps={{
                 endAdornment: (
                   <IconButton onClick={handleClick} disabled={!Search} edge="end">
-                    <SearchIcon />
+                    { loading ? <Loader /> : <SearchIcon /> }
                   </IconButton>
                 ),
               }}

@@ -38,7 +38,7 @@ export default function Appbar() {
   const handleLogout = () => {
     // Redirect to the /login page
     
-    navigate('/login', { replace: true });
+    navigate('/', { replace: true });
     window.location.reload();
     
   };
@@ -106,7 +106,7 @@ export default function Appbar() {
             ))}
           </div>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 , color: 'white' }}>
-            <Link to="/">
+            <Link to="/home">
               KBase
             </Link>
           </Typography>

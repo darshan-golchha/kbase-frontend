@@ -11,6 +11,7 @@ import InputLabel from '@mui/material/InputLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Fab from '@mui/material/Fab';
 import NavigationIcon from '@mui/icons-material/Navigation';
+import Loader from './Loader';
 
 
 const EditPage = () => {
@@ -29,6 +30,7 @@ const EditPage = () => {
     const [menuFiles, setMenuFiles] = useState([]);
     const menuId = id;
     const [selectedFiles, setSelectedFiles] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         fetchMenuFiles();
@@ -77,10 +79,10 @@ const EditPage = () => {
             console.log(error.response);
             if (error.response && (error.response.status === 403)) {
                 window.alert('Unauthorized! You are not allowed view these files.');
-                navigate("/", { replace: true });
+                navigate("/home", { replace: true });
             } else if (error.response && error.response.status === 401) {
                 window.alert('Your session is expired Or you are not authorized to access this.');
-                navigate("/login", { replace: true });
+                navigate("/", { replace: true });
             } else {
                 console.error('Error occurred while fetching data:', error);
             }
@@ -117,7 +119,7 @@ const EditPage = () => {
         for (let i = 0; i < filesToDelete.length; i++) {
             formData.append('fileIdsToDelete', filesToDelete[i]);
         }
-
+        setLoading(true);
         try {
 
             const response = await axiosPrivate.post(`https://kbase-backend-b5135e83fa8d.herokuapp.com/update/${menuId}`, formData, {
@@ -127,21 +129,23 @@ const EditPage = () => {
             });
 
             if (response?.data) {
-                console.log(response);
-                navigate("/", { replace: true });
+                setLoading(false);
+                navigate("/home", { replace: true });
             } else {
-                console.log("incorrect submission");
+                setLoading(false);
+                alert("incorrect submission");
             }
         } catch (error) {
+            setLoading(false);
             console.log(error.response);
             if (error.response && (error.response.status === 403)) {
                 window.alert('Unauthorized! You are not allowed to edit this record.');
-                navigate("/", { replace: true });
+                navigate("/home", { replace: true });
             } else if (error.response && error.response.status === 401) {
                 window.alert('Your session is expired Or you are not authorized to access this.');
-                navigate("/login", { replace: true });
+                navigate("/", { replace: true });
             } else {
-                console.error('Error occurred while fetching data:', error);
+                alert('Error occurred while fetching data:', error);
             }
         }
     };

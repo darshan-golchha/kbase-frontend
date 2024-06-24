@@ -14,10 +14,12 @@ import NavigationIcon from '@mui/icons-material/Navigation';
 import '../index.css';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import { useNavigate} from "react-router";
+import Loader from './Loader';
 
 const Result = () => {
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const [deps, setDeps] = useState([]);
   useEffect(() => {
@@ -33,10 +35,10 @@ const Result = () => {
           console.log(error.response);
           if (error.response && (error.response.status === 403)) {
               window.alert('Unauthorized! You don\'t have permissions');
-              navigate("/", { replace: true });
+              navigate("/home", { replace: true });
           } else if (error.response && error.response.status === 401) {
               window.alert('Your session is expired Or you are not authorized to access this.');
-              navigate("/login", { replace: true });
+              navigate("/", { replace: true });
           } else {
               console.error('Error fetching departments : ', error);
           }
@@ -60,10 +62,10 @@ const Result = () => {
         console.log(error.response);
         if (error.response && (error.response.status === 403)) {
             window.alert('Unauthorized! You don\'t have permissions');
-            navigate("/", { replace: true });
+            navigate("/home", { replace: true });
         } else if (error.response && error.response.status === 401) {
             window.alert('Your session is expired Or you are not authorized to access this.');
-            navigate("/login", { replace: true });
+            navigate("/", { replace: true });
         } else {
             console.error('Error fetching functions : ', error);
         }
@@ -87,10 +89,10 @@ const Result = () => {
         console.log(error.response);
         if (error.response && (error.response.status === 403)) {
             window.alert('Unauthorized! You don\'t have permissions');
-            navigate("/", { replace: true });
+            navigate("/home", { replace: true });
         } else if (error.response && error.response.status === 401) {
             window.alert('Your session is expired Or you are not authorized to access this.');
-            navigate("/login", { replace: true });
+            navigate("/", { replace: true });
         } else {
             console.error('Error fetching applications : ', error);
         }
@@ -121,10 +123,10 @@ const Result = () => {
         console.log(error.response);
         if (error.response && (error.response.status === 403)) {
             window.alert('Unauthorized! You don\'t have permissions');
-            navigate("/", { replace: true });
+            navigate("/home", { replace: true });
         } else if (error.response && error.response.status === 401) {
             window.alert('Your session is expired Or you are not authorized to access this.');
-            navigate("/login", { replace: true });
+            navigate("/", { replace: true });
         } else {
             console.error('Error fetching menu : ', error);
         }
@@ -192,8 +194,10 @@ const Result = () => {
   }, [department, func, application, menu, auth, desc, files]);
 
   const handleSubmit = async () => {
+    setLoading(true);
     if (!isFormValid) {
       alert('Please fill in all the required fields and upload at least one file before submitting.');
+      setLoading(false);
       return;
     }
     const url = `https://kbase-backend-b5135e83fa8d.herokuapp.com/add?departmentName=${department}&functionName=${func}&applicationName=${application}&menuName=${menu}&description=${desc}&author=${auth}`;
@@ -204,6 +208,7 @@ const Result = () => {
     }
 
     try {
+      setLoading(true);
       const response = await axiosPrivate.post(url, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -211,19 +216,21 @@ const Result = () => {
       });
 
       if (response?.data) {
-        console.log(response);
-        navigate("/", { replace: true });
+        setLoading(false);
+        navigate("/home", { replace: true });
       } else {
+        setLoading(false);
         console.log("incorrect submission");
       }
     } catch (error) {
+      setLoading(false);
       console.log(error.response);
       if (error.response && (error.response.status === 403)) {
           window.alert('Unauthorized! You don\'t have permissions');
-          navigate("/", { replace: true });
+          navigate("/home", { replace: true });
       } else if (error.response && error.response.status === 401) {
           window.alert('Your session is expired Or you are not authorized to access this.');
-          navigate("/login", { replace: true });
+          navigate("/", { replace: true });
       } else {
           console.error('Error uploading data : ', error);
       }
@@ -360,7 +367,9 @@ const Result = () => {
               </ul>
             )}
           </div>
-          <Button variant="contained" onClick={handleSubmit} type="submit" style={{ width : 'fit-content', height : 'fit-content', margin : 'auto'}}>Submit</Button>
+          <Button variant="contained" onClick={handleSubmit} type="submit" style={{ width : 'fit-content', height : 'fit-content', margin : 'auto'}}>
+            {loading ? <Loader /> : 'Submit'}
+          </Button>
         </div>
       </Paper>
       <div style={{ height: "90px" }} />

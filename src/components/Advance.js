@@ -10,6 +10,7 @@ import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Grid from '@mui/material/Grid';
+import Loader from './Loader';
 
 const SearchContainer = styled('div')({
   padding: '1em',
@@ -30,6 +31,7 @@ const AdvancedSearch = () => {
     uniqueMenuId: false,
   });
   const [searchResults, setSearchResults] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -42,14 +44,16 @@ const AdvancedSearch = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+    setLoading(true);
     try {
       const response = await axiosPrivate.get('/search', { params: searchCriteria });
 
       if (response?.data) {
         setSearchResults(response.data);
       }
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.error('Error performing search:', error);
     }
   };
@@ -160,7 +164,7 @@ const AdvancedSearch = () => {
             </Grid>
             <Grid item xs={6} sm={3}>
               <Button variant="contained" type="submit" fullWidth >
-                Search
+                {loading ? <Loader /> : 'Search'}
               </Button>
             </Grid>
           </Grid>

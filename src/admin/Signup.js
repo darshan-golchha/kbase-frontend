@@ -1,22 +1,34 @@
 import React, { useState } from 'react';
 import { TextField, Button, Typography, Paper, Box } from '@mui/material';
 import axios from 'axios';
+import Loader from '../components/Loader';
+import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
     const [userName, setUserName] = useState('');
     const [passWord, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const handleSignup = async () => {
+        setLoading(true);
         try {
             const response = await axios.post(`https://kbase-backend-b5135e83fa8d.herokuapp.com/login/create?userName=${userName}&passWord=${passWord}`);
 
             if (response.status === 200) {
                 setErrorMessage('');
                 setSuccessMessage('User created successfully!');
+                setUserName('');
+                setPassword('');
+                setTimeout(() => {
+                    navigate('/');
+                }, 2000);
             }
+            setLoading(false);
         } catch (error) {
+            setLoading(false);
             if (error.response && error.response.status === 409) {
                 setErrorMessage('A user with the username already exists. Please choose another username.');
                 setSuccessMessage('');
@@ -79,7 +91,7 @@ const Signup = () => {
                     }}
                 />
                 <Button variant="contained" color="primary" onClick={handleSignup} fullWidth>
-                    Sign Up
+                    {loading ? <Loader /> : 'Sign Up'}
                 </Button>
                 {errorMessage && (
                     <Box

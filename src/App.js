@@ -26,13 +26,13 @@ class App extends Component {
       <Router>
         <div>
           <Routes>
-            <Route exact path='/' element={
+            <Route exact path='/home' element={
               <div className="App" style={myStyle}>
                   <Appbar />
                   <Data style={{ margin: '3em' }} />
               </div>
             } />
-            <Route exact path='/login' element={
+            <Route exact path='/' element={
               <Login />} />
             <Route exact path='/result' element={
               <Result />

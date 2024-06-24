@@ -9,16 +9,18 @@ import Typography from "@mui/material/Typography";
 import { useContext } from "react";
 import AuthContext from "../context/AuthProvider";
 import { Link } from 'react-router-dom';
+import Loader from "./Loader";
 
 const Login = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const from = location.state?.from?.pathname || "/";
+    const from = location.state?.from?.pathname || "/home";
     const { setAuth } = useAuth();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const { updateToken } = useContext(AuthContext);
+    const [loading, setLoading] = useState(false);
 
     const API = axios.create({
         baseURL: "https://kbase-backend-b5135e83fa8d.herokuapp.com",
@@ -26,6 +28,7 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
             const res = await API.post("/auth/login", {
                 username,
@@ -36,8 +39,7 @@ const Login = () => {
                     withCredentials: true
                 },
             });
-
-
+            setLoading(false);
             if (res?.data.username) {
                 const jwtToken = res?.data.jwtToken;
                 setAuth({ username, password });
@@ -51,6 +53,7 @@ const Login = () => {
                 setError("Incorrect username or password");
             }
         } catch (err) {
+            setLoading(false);
             if (!err?.response) {
                 setError("No server response");
             } else {
@@ -139,8 +142,8 @@ const Login = () => {
                             {error}
                         </Typography>
                     )}
-                    <Button type="submit" variant="contained" size="large">
-                        Login
+                    <Button type="submit" variant="contained" size="large" disabled={loading}>
+                        {loading ? <Loader /> : "Login"}
                     </Button>
                     <Typography variant="body1" color="textSecondary">
                         Not currently a user?{" "}
